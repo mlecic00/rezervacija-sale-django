@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bukiranje sale</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <section id="book-a-table" class="book-a-table">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between">
+            <ul class="nav nav-tabs" id="navId" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  data-bs-toggle="tab"
+                  aria-current="page"
+                  >Navbar</a
+                >
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  href="{% url 'reservation-home' %}"
+                  class="nav-link" data-bs-toggle="tab"
+                  >Home</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between">
+            <div class="col-md-8 offset-md-2 text-center">
+              <h2 class="text-primary">Update rezervacija sale</h2>
+              <p class="mb-5">Update rezervacija sale</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <form id="myForm" role="form" method="POST" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button
+              type="submit"
+              class="btn btn-primary float-right mt-3"
+              id="button_2"
+            >
+              Rezervisi
+            </button>
+            <div id="loader" class="loader" style="display: none">Loading...</div>
+            <div id="content"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script></script>
+  </body>
+</html>

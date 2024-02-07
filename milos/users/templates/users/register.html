@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Register</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+    <div>
+      <ul class="nav nav-tabs" id="navId" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            data-bs-toggle="tab"
+            aria-current="page"
+            >Navbar</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            href="{% url 'reservation-home' %}"
+            class="nav-link" data-bs-toggle="tab"
+            >Home</a
+          >
+        </li>
+      </ul>
+    </div>
+    <strong><h1>REGISTER</h1></strong>
+    <div class = "form-group">
+        <form method= "POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button 
+            class="btn btn-primary float-right mt-3"
+            id="button_registration">Register</button>
+    </div>
+  <script></script>
+  </div>
+  </body>
+</html>

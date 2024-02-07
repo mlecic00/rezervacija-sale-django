@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bukiranje sale</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Detalji rezervacije</title>
+  </head>
+  <body>
+    <div class="container">
+      <ul class="nav nav-tabs" id="navId" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" aria-current="page"
+            >Navbar</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a href="{% url 'reservation-home' %}" class="nav-link" data-bs-toggle="tab"
+            >Home</a
+          >
+        </li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="tab1Id"
+          role="tabpanel"
+        ></div>
+        <div class="tab-pane fade" id="tab2Id" role="tabpanel"></div>
+        <div class="tab-pane fade" id="tab3Id" role="tabpanel"></div>
+        <div class="tab-pane fade" id="tab4Id" role="tabpanel"></div>
+        <div class="tab-pane fade" id="tab5Id" role="tabpanel"></div>
+      </div>
+      <div style="text-align: center; color: #556b2f">
+        <h1>Detalji rezervacije</h1>
+      </div>
+      {% if user.is_authenticated %}
+      <div>
+        <a
+          class="btn btn-primary float-right"
+          id="button_4"
+          href="{% url 'reservation-delete' post.id %}"
+        >
+          Obrisi rezervaciju
+      </a>
+      </div>
+      {% endif %}
+      <div
+        class="col-12 align-items-center justify-content-between panel-1"
+        id="reservationDetails"
+        style="
+          text-align: center;
+          font-size: medium;
+          margin-top: 50px;
+          border-width: 10px;
+          border-style: solid;
+          border-color: #556b2f;
+          padding: 1em;
+        "
+      ><h2>Sala: {{ post.sala }}</h2>
+      <h2>Dolazak: {{ post.dolazak }}</h2>
+      <h2>Odlazak: {{ post.odlazak }}</h2>
+      <h2>Datum: {{ post.datum }}</h2>
+      <h2>Ime: {{ post.ime.username }}</h2>
+      <h2>Razlog: {{ post.razlog }}</h2>
+      <h2>Napomena: {{ post.napomena }}</h2>
+    </div>
+    {% if user.is_authenticated %}
+      <div>
+        <a href="{% url 'reservation-reservation' %}"
+          ><button
+            type="button"
+            class="btn btn-primary left-button"
+            id="button_3"
+            style="margin-top: 5px"
+          >
+            Rezervisi salu
+          </button></a
+        >
+      </div>
+    {% endif %}
+    </div>
+    <script></script>
+  </body>
+</html>
