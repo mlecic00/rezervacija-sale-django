@@ -7,13 +7,13 @@ from django.urls import reverse
 
 class Post(models.Model):
     SALA_CHOICES = [
-        ('sala1', '305'),
-        ('sala2', '209'),
-        ('sala3', '208'),
-        ('sala4', '107'),
-        ('sala5', '308'),
-        ('sala6', '200'),
-        ('sala7', '103')
+        ('sala1', 'sala1'),
+        ('sala2', 'sala2'),
+        ('sala3', 'sala3'),
+        ('sala4', 'sala4'),
+        ('sala5', 'sala5'),
+        ('sala6', 'sala6'),
+        ('sala7', 'sala7')
     ]
     sala = models.CharField(max_length=100, choices=SALA_CHOICES)
     dolazak = models.TimeField()

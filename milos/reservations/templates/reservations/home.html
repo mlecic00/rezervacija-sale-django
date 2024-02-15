@@ -39,7 +39,7 @@
             <a class="navbar-brand">Navbar</a>
             <div class="d-flex align-items-center">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {{ user }}
+                {% comment %} {{ user }} {% endcomment %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                   <a
@@ -101,7 +101,7 @@
               type="text"
               id="myInput"
               onkeyup="MyFilter()"
-              placeholder="Pretraga Sale..."
+              placeholder="Pretraga..."
               title="Sala za koju zelite rezultate"
               style="padding: 0"
             />
@@ -228,17 +228,26 @@
         tr = table.getElementsByTagName("tr");
       
         for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td")[1];
-          if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              tr[i].style.display = "";
-            } else {
-              tr[i].style.display = "none";
+            td1 = tr[i].getElementsByTagName("td")[1];
+            td2 = tr[i].getElementsByTagName("td")[2];
+            td3 = tr[i].getElementsByTagName("td")[6];
+            
+            if (td1 && td2 && td3) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue3 = td3.textContent || td3.innerText;
+    
+                if (txtValue1.toUpperCase().indexOf(filter) > -1 ||
+                    txtValue2.toUpperCase().indexOf(filter) > -1 ||
+                    txtValue3.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
-          }
         }
-      }</script>
+    }
+    </script>
       <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"

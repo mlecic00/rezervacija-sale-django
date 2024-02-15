@@ -30,4 +30,4 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     messages.success(request, ("Uspesno ste izlogovani!"))
-    return redirect('reservation-home')
+    return redirect('login')

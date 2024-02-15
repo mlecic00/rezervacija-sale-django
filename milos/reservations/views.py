@@ -15,7 +15,7 @@ posts = Post.objects.all()
 
 def home(request):
     post_list = Post.objects.all().order_by('-datum')
-    perpage = request.GET.get('perpage', 5)
+    perpage = request.GET.get('perpage', 10)
     try:
         perpage = int(perpage)
         if perpage < 1:  
