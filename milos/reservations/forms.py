@@ -6,6 +6,7 @@ from django.db.models import Q
 
 
 class ResUpdateForm(forms.ModelForm):
+    
     class Meta:
         model = Post
         fields = ['sala', 'datum', 'dolazak', 'odlazak', 'razlog', 'napomena']
@@ -31,9 +32,9 @@ class ResUpdateForm(forms.ModelForm):
                 Q(dolazak__lte=dolazak, odlazak__gte=odlazak),
                 sala=sala,
                 datum=datum 
-            ).exclude(id=self.instance.id)  # Exclude current instance if updating
+            ).exclude(id=self.instance.id)  
             if conflicting_reservations.exists():
-                raise ValidationError("Sala je bukirana u ovo vreme!")
+                raise ValidationError("Sala je bukirana u ovo vreme!", code='invalid')
 
         return cleaned_data
     
@@ -64,8 +65,8 @@ class ReservationForm(forms.ModelForm):
                 Q(dolazak__lte=dolazak, odlazak__gte=odlazak),
                 sala=sala,
                 datum=datum 
-            ).exclude(id=self.instance.id)  # Exclude current instance if updating
+            ).exclude(id=self.instance.id) 
             if conflicting_reservations.exists():
-                raise ValidationError("Sala je bukirana u ovo vreme!")
+                raise ValidationError("Sala je bukirana u ovo vreme!", code='invalid')
 
         return cleaned_data

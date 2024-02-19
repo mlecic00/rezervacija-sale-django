@@ -33,7 +33,9 @@ def home(request):
 
     context = {
         'posts': posts,
-        'perpage': perpage  
+        'perpage': perpage,
+        'page_obj': posts,
+        'paginator': paginator
     }
     return render(request, 'reservations/home.html', context)
 

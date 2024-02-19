@@ -157,9 +157,8 @@
         <div
           class="col-12 d-flex justify-content-between align-items-center p-0"
         >
-          <div>
-            {{ is_paginated }}
-            {% if is_paginated %}
+          <div class="pagination">
+            <span class="step-links">
             {% if page_obj.has_previous %}
                 <a class="btn btn-outline-info mb-4" href="?page=1&perpage={{ perpage }}">First</a>
                 <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}&perpage={{ perpage }}">Previous</a>
@@ -175,7 +174,7 @@
                 <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}&perpage={{ perpage }}">Next</a>
                 <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}&perpage={{ perpage }}">Last</a>
             {% endif %} 
-        {% endif %}
+            </span>
           </div>
 
           <div class="d-flex align-items-center">

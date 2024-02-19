@@ -11,6 +11,12 @@
     />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+      .error-message {
+        color: red;
+        font-size: 14px;
+        }
+    </style>
   </head>
   <body>
     <section id="book-a-table" class="book-a-table">
@@ -48,6 +54,17 @@
           <form id="myForm" role="form" method="POST" >
             {% csrf_token %}
             {{ form.as_p }}
+
+            {% for field in form %}
+            {% for error in field.errors %}
+            <h2 class="error-message">{{ error }}</h2>
+            {% endfor %}
+            {% endfor %}
+
+        <!-- Render non-field errors -->
+            {% for error in form.non_field_errors %}
+            <h2 class="error-message">{{ error }}</h2>
+            {% endfor %}
             <button
               type="submit"
               class="btn btn-primary float-right mt-3"
