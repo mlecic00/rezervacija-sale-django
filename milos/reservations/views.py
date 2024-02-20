@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 #from django.http import HttpResponse
+#from django.forms.models import model_to_dict #ovo kaze da lakse mozemo da prikazemo polja u modelu koja hocemo  
+#from rest_framework.response import Response 
+from rest_framework.decorators import api_view
 from .models import Post
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import UpdateView, DeleteView
@@ -12,7 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 posts = Post.objects.all()
 
-
+@api_view(["GET", "POST"])
 def home(request):
     post_list = Post.objects.all().order_by('-datum')
     perpage = request.GET.get('perpage', 10)
