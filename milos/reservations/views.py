@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from .forms import ResUpdateForm, ReservationForm
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from datetime import date
 # def home(request):
 #     return HttpResponse('<h1>Blog Home</h1>')
 
@@ -38,19 +39,20 @@ def home(request):
         'posts': posts,
         'perpage': perpage,
         'page_obj': posts,
-        'paginator': paginator
+        'paginator': paginator,
+        'today': date.today()
     }
     return render(request, 'reservations/home.html', context)
 
 
 def reservation(request):
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        form = ReservationForm(request.POST, request = request)
         if form.is_valid():
             form.save()
             return redirect('/')  
     else:
-        form = ReservationForm()
+        form = ReservationForm(request = request)
 
     return render(request, 'reservations/reservation.html', {'form': form})
 
@@ -66,6 +68,8 @@ class UpdateResView(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         post = self.get_object()
+        if self.request.user.is_superuser:
+            return True
         if self.request.user == post.ime:
             return True
         return False
@@ -77,6 +81,8 @@ class DeleteResView(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
+        if self.request.user.is_superuser:
+            return True
         if self.request.user == post.ime:
             return True
         return False

@@ -3,6 +3,7 @@ from .models import Post
 from django.core.exceptions import ValidationError
 #from django.core.validators import MaxLengthValidator
 from django.db.models import Q
+from datetime import date
 
 
 class ResUpdateForm(forms.ModelForm):
@@ -25,6 +26,13 @@ class ResUpdateForm(forms.ModelForm):
         dolazak = cleaned_data.get('dolazak')
         odlazak = cleaned_data.get('odlazak')
         datum = cleaned_data.get('datum')
+
+        if dolazak and odlazak and dolazak >= odlazak:
+            raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaksa!")
+        
+        
+        if datum and datum < date.today():
+            raise ValidationError("Nije moguće kreirati rezervaciju u danu koji je prošao!")
 
         if sala and dolazak and odlazak and datum:
             conflicting_reservations = Post.objects.filter(
@@ -52,12 +60,27 @@ class ReservationForm(forms.ModelForm):
             'napomena' : forms.Textarea(attrs={'class':'form-control','placeholder':'Napomena...'})
         }
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(ReservationForm, self).__init__(*args, **kwargs)
+
     def clean(self):
         cleaned_data = super().clean()
         sala = cleaned_data.get('sala')
         dolazak = cleaned_data.get('dolazak')
         odlazak = cleaned_data.get('odlazak')
         datum = cleaned_data.get('datum')
+        ime = cleaned_data.get('ime')
+
+        if not self.request.user.is_superuser:
+                if self.request.user != ime:
+                    raise ValidationError("Nije moguće napraviti rezervaciju sa tuđim imenom!", code='invalid')
+
+        if dolazak and odlazak and dolazak >= odlazak:
+            raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaksa!")
+        
+        if datum and datum < date.today():
+            raise ValidationError("Nije moguće kreirati rezervaciju u danu koji je prošao!")
 
         if sala and dolazak and odlazak and datum:
             conflicting_reservations = Post.objects.filter(

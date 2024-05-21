@@ -11,6 +11,17 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <style>
+      .error-message {
+          color: red;
+          font-weight: bold;
+          margin-top: 10px;
+          background-color: #f8d7da;
+          border: 1px solid #f5c6cb;
+          padding: 10px;
+          border-radius: 5px;
+      }
+      </style>
   </head>
 
   <body>
@@ -18,7 +29,7 @@
       <h1></h1>
     </header>
     {% if error_message %}
-        <p>{{ error_message }}</p>
+    <p class="error-message">{{ error_message }}</p>
     {% endif %}
     <div class="container"></div>
     
@@ -31,7 +42,13 @@
           class="col-10 col-md-8 col-lg-6 col-xl-4 bg-light opacity-50 p-4 rounded-1"
         >
         {% if user.is_authenticated %}
-        <h1>Vec ste ulogovani!</h1>
+        <div class="text-center mt-5">
+          <h1>Već ste ulogovani!</h1>
+          <a
+            href="{% url 'reservation-home' %}"
+            class="nav-link"
+            data-bs-toggle="tab"
+            >Home</a>
         {% else %}
           <form id="login"  method="POST">
             {% csrf_token %}

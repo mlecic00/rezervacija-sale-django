@@ -13,7 +13,8 @@
     <style>
       .error-message {
         color: red;
-        font-size: 14px;
+        font-size: 20px;
+        font-weight: bold;
         }
     </style>
   </head>
@@ -53,11 +54,15 @@
         <div class="form-group">
         <form id="myForm" role="form" method="POST" >
           {% csrf_token %}
-          {{ form.as_p }}
+          {% comment %} {{ form.as_p }} {% endcomment %}
           {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }}<br>
+            {{ field }}
           {% for error in field.errors %}
-          <h2 class="error-message">{{ error }}</h2>
+            	<span class="error-message">{{ error }}</span><br>
           {% endfor %}
+          </div>
           {% endfor %}
 
       <!-- Render non-field errors -->

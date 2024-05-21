@@ -28,23 +28,35 @@
       .dark-time-input {
         background-color: #333;
         color: #fff;
-    }
+      }
+      .expired-reservation td {
+        background-color: lightgray;
+      }
+      .valid-reservation td {
+        background-color: lightgreen;
+      }
     </style>
   </head>
   <body>
     <div class="container-fluid bg-light">
-      <img
+      {% comment %} <img
         src="{% static 'MDS.jpg' %}"
         style="position: absolute; width: 100px; height: 100px; bottom:0;"
-      />
+      /> {% endcomment %}
       <div class="container p-0">
         <nav class="navbar navbar-expand-lg navbar-light p-0">
           <div class="container-fluid">
             <a class="navbar-brand">Navbar</a>
             <div class="d-flex align-items-center">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {% comment %} {{ user }} {% endcomment %}
                 {% if user.is_authenticated %}
+                <li class="nav-item" style="background-color:lightgreen ">
+                  <a
+                    class="nav-link active"
+                    aria-current="page"
+                    href="#"
+                    >User:{{ user }}</a
+                  ></li>
                 <li class="nav-item">
                   <a
                     class="nav-link active"
@@ -105,8 +117,8 @@
               type="text"
               id="myInput"
               onkeyup="MyFilter()"
-              placeholder="Pretraga..."
-              title="Sala za koju zelite rezultate"
+              placeholder="Filtriranje po sali, imenu ili razlogu..."
+              title="Rezervacija za koju zelite rezultate"
               style="padding: 0"
             />
             <button
@@ -141,7 +153,7 @@
                 </thead>
                 <tbody id="table_body">
                 {% for r in posts %}
-                  <tr>
+                  <tr class="{% if r.datum < today %}expired-reservation{% elif r.datum >= today %}valid-reservation{% endif %}">
                       <td>{% if user.is_authenticated %}<a style="color:red" href="{% url 'reservation-delete' pk=r.id %}">Obrisi</a>{% endif %}</td>                      
                       <td><a href="{% url 'reservation-details' r.id %}">{{ r.sala }}</a></td>
                       <td>{{ r.ime }}</td>
