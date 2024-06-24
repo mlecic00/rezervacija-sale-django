@@ -15,6 +15,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
       #myInput {
         background-position: 10px 10px;
@@ -34,6 +35,15 @@
       }
       .valid-reservation td {
         background-color: lightgreen;
+      }
+      .custom-pagination .btn-custom-outline {
+        color: #ff0000; 
+        border-color: #ff0000; 
+      }
+      .custom-pagination .btn-custom {
+          background-color: #ff0000; 
+          color: #ffffff; 
+          border-color: #ff0000; 
       }
     </style>
   </head>
@@ -97,10 +107,35 @@
       <form role="form" id="form2" method="get" action="{% url 'reservation-home' %}">
         <div class="row">
           <div class="col-12 d-flex justify-content-between align-items-center">
-            <h1>REZERVACIJA SALE</h1>
-            <div class="d-grid gap-2 d-md-block">
+            <h1 class="my-4">REZERVACIJA SALE</h1>
+           
+          </div>
+          <div class="col-12 d-flex justify-content-between align-items-end ">
+            <div class="col-6 mb-2" style="padding-left:0px;">
+              <input
+              type="text"
+              id="myInput"
+              onkeyup="MyFilter()"
+              placeholder="Filtriranje po sali, imenu ili razlogu..."
+              title="Rezervacija za koju zelite rezultate"
+              style="padding: 6px;border-radius:.25rem;"
+              class="w-50"
+            />
+              <div class="d-flex align-items-end">
+                <div class="mr-2">
+                  <label for="start_date">Od:</label>
+                  <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+                </div>
+                <div  class="mr-2">
+                  <label for="end_date">Do:</label>
+                  <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+              </div>  
+            </div>
+           
               {% if user.is_authenticated %}
-              <a href="{% url 'reservation-reservation' %}"
+              <a href="{% url 'reservation-reservation' %}" class="mb-2"
                 ><button
                   type="button"
                   class="btn btn-primary left-button"
@@ -110,25 +145,6 @@
                 </button></a
               >
               {% endif %}
-            </div>
-          </div>
-          <div class="col-12 d-flex justify-content-between align-items-center">
-            <input
-              type="text"
-              id="myInput"
-              onkeyup="MyFilter()"
-              placeholder="Filtriranje po sali, imenu ili razlogu..."
-              title="Rezervacija za koju zelite rezultate"
-              style="padding: 0"
-            />
-            <button
-              type="button"
-              class="btn btn-primary left-button mb-2"
-              id="button_4"
-              onclick="sortTable()"
-            >
-              Sort po datumu
-            </button>
           </div>
         </div>
         <article class="content">
@@ -154,7 +170,7 @@
                 <tbody id="table_body">
                 {% for r in posts %}
                   <tr class="{% if r.datum < today %}expired-reservation{% elif r.datum >= today %}valid-reservation{% endif %}">
-                      <td>{% if user.is_authenticated %}<a style="color:red" href="{% url 'reservation-delete' pk=r.id %}">Obrisi</a>{% endif %}</td>                      
+                      <td>{% if user.is_authenticated %}<a style="color:black" href="{% url 'reservation-delete' pk=r.id %}"><i class="fa-sharp fa-solid fa-trash"></i></a>{% endif %}</td>                      
                       <td><a href="{% url 'reservation-details' r.id %}">{{ r.sala }}</a></td>
                       <td>{{ r.ime }}</td>
                       <td>{{ r.datum }}</td>
@@ -173,26 +189,26 @@
         <div
           class="col-12 d-flex justify-content-between align-items-center p-0"
         >
-          <div class="pagination">
-            <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a class="btn btn-outline-info mb-4" href="?page=1&perpage={{ perpage }}">First</a>
-                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}&perpage={{ perpage }}">Previous</a>
-            {% endif %} 
-            {% for num in page_obj.paginator.page_range %} 
-                {% if page_obj.number == num %}
-                    <a class="btn btn-info mb-4" href="?page={{ num }}&perpage={{ perpage }}">{{ num }}</a>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <a class="btn btn-outline-info mb-4" href="?page={{ num }}&perpage={{ perpage }}">{{ num }}</a>
-                {% endif %} 
-            {% endfor %} 
-            {% if page_obj.has_next %}
-                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}&perpage={{ perpage }}">Next</a>
-                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}&perpage={{ perpage }}">Last</a>
-            {% endif %} 
-            </span>
-          </div>
-
+        <div class="pagination">
+          <span class="step-links">
+              {% if page_obj.has_previous %}
+                  <a class="btn btn-outline-primary mb-4" href="?page=1&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">First</a>
+                  <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">Previous</a>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == num %}
+                      <a class="btn btn-primary mb-4" href="?page={{ num }}&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">{{ num }}</a>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                      <a class="btn btn-outline-primary mb-4" href="?page={{ num }}&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">{{ num }}</a>
+                  {% endif %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+                  <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">Next</a>
+                  <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}&perpage={{ perpage }}&start_date={{ start_date }}&end_date={{ end_date }}&search_query={{ search_query }}">Last</a>
+              {% endif %}
+          </span>
+      </div>
+      
           <div class="d-flex align-items-center">
           <label for="perpage"></label>
           <div class="me-3">

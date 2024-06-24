@@ -3,7 +3,7 @@ from .models import Post
 from django.core.exceptions import ValidationError
 #from django.core.validators import MaxLengthValidator
 from django.db.models import Q
-from datetime import date
+from datetime import date, datetime, timedelta
 
 
 class ResUpdateForm(forms.ModelForm):
@@ -27,12 +27,18 @@ class ResUpdateForm(forms.ModelForm):
         odlazak = cleaned_data.get('odlazak')
         datum = cleaned_data.get('datum')
 
-        if dolazak and odlazak and dolazak >= odlazak:
-            raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaksa!")
-        
-        
+        if dolazak and odlazak:
+            if dolazak >= odlazak:
+                raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaska!")
+
+            delta = datetime.combine(date.today(), odlazak) - datetime.combine(date.today(), dolazak)
+            if delta < timedelta(minutes=15):
+                raise ValidationError("Trajanje rezervacije je minimum 15 minuta!")
+
+  
         if datum and datum < date.today():
             raise ValidationError("Nije moguće kreirati rezervaciju u danu koji je prošao!")
+
 
         if sala and dolazak and odlazak and datum:
             conflicting_reservations = Post.objects.filter(
@@ -76,8 +82,13 @@ class ReservationForm(forms.ModelForm):
                 if self.request.user != ime:
                     raise ValidationError("Nije moguće napraviti rezervaciju sa tuđim imenom!", code='invalid')
 
-        if dolazak and odlazak and dolazak >= odlazak:
-            raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaksa!")
+        if dolazak and odlazak:
+            if dolazak >= odlazak:
+                raise ValidationError("Unesite odgovarajuća vremena dolaska i odlaska!")
+
+            delta = datetime.combine(date.today(), odlazak) - datetime.combine(date.today(), dolazak)
+            if delta < timedelta(minutes=15):
+                raise ValidationError("Trajanje rezervacije je minimum 15 minuta!")
         
         if datum and datum < date.today():
             raise ValidationError("Nije moguće kreirati rezervaciju u danu koji je prošao!")
